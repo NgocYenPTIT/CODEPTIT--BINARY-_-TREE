@@ -1,0 +1,67 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ui unsigned int 
+ui base = 11;
+string s;
+int n;
+ui t[4 * 100001] , r_t[4 * 100001] ,poww[100001];// node u luu xuoi va luu nguoc , t thi luu xuoi ,r_t thi luu nguoc ( hoi kho hieu )
+ void setpoww(int n ){
+    poww[0] = 1;
+    for(int i = 1 ; i<= n ; i++)poww[i] = poww[i-1] * base;
+}
+inline void build(int u , int l , int r){
+    if(l == r){
+        t[u] = r_t[u] =  s[l] - 48 + 1;
+        return;
+    }
+    int m = (l + r) /2;
+    build(2*u+1,l,m);
+    build(2*u+2,m+1,r);
+    int sizeright= r-m , sizeleft = m-l+1;
+    t[u] = t[2*u+1] * poww[sizeright] + t[2*u+2];;
+    //
+    r_t[u] = r_t[2*u+2] * poww[sizeleft] + r_t[2*u+1];;
+}
+inline void update(int u , int l,int r ,int index, ui nums){
+    if(l == r){
+        t[u] = r_t[u] = nums;
+        return;
+    }
+    int m = (l  + r )/2;
+    if(m < index)update(2*u +2,m+1,r,index,nums); // nam phai
+    else update(2*u+1,l , m ,index , nums );
+    int sizeright= r-m , sizeleft = m-l+1;
+    t[u] = t[2*u+1] * poww[sizeright] + t[2*u+2]; ;
+    //
+    r_t[u] = r_t[2*u+2] * poww[sizeleft] + r_t[2*u+1];
+}
+inline pair<ui,ui> query(int u , int tl,int tr,int l , int r){
+    if(tl == l && tr == r)return {t[u] , r_t[u]};
+    int m = (tl + tr)/2;
+    if(l >= m+1 )return query(2*u+2,m+1,tr,l,r);
+    else if( r <= m)return query(2*u+1,tl,m,l,r);
+    pair<ui,ui> left = query(2*u+1,tl,m,l,m) , right = query(2*u+2 , m+1 , tr,m+1,r);
+    return {left.first * poww[r-m] + right.first, right.second * poww[m-l+1]  + left.second};
+}
+int main(){
+    ios_base::sync_with_stdio(0); cin.tie(NULL); cout.tie(NULL);
+    cin >> s;
+    n = s.size();
+    setpoww(n);
+    build(0,0,n-1);
+    int q;
+    cin >> q;
+    while(q--){
+        int x , y;
+        char c;
+        cin >> c >> x >> y;
+        if(c == 'q'){
+            pair<ui,ui> p = query(0,0,n-1,x-1,y-1);
+            ui ans = p.first;
+            ui ans2 = p.second;
+            ans == ans2 ? cout<<"YES\n": cout<<"NO\n";
+        }
+        else update(0,0,n-1,x-1,(ui)y+1);
+    }
+}
