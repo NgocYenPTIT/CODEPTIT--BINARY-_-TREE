@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ii pair<int,int>
+set<int>se;
+int ok;
+struct node{
+	int data;
+	node *l , *r;
+	node(int x){
+		data = x;
+		l = r = NULL;
+	}
+};
+void insertnode(node *&root , int s, int t , char c){
+	if(root == NULL)return;
+	if(root->data == s){
+		if(c == 'L')root->l = new node(t);
+		else root ->r = new node(t);
+	}
+	else insertnode(root->l , s, t , c) , insertnode(root->r , s , t, c);
+}
+void in(node* root , int cnt){
+	if(root == NULL)return;
+	if(!ok)return;
+	if(!(root->l == NULL && root->r ==NULL)){
+		if(root->l == NULL || root->r ==NULL){
+			ok = 0;
+			return;
+		}
+	}
+	if(root -> l == NULL && root -> r == NULL)se.insert(cnt);
+	else in(root->l , cnt+1) , in(root->r , cnt + 1);
+}
+void solve(){
+	se.clear();
+	ok = 1;
+	node * root = NULL;
+	int n;
+	cin >> n;
+	while(n--){
+		int s , t;
+		char c;
+		cin >> s >> t>> c;
+		if(root==NULL){
+			root = new node(s);
+			if(c=='L')root->l = new node(t);
+			else root->r = new node(t);
+		}
+		else insertnode(root, s,t,c);
+	}
+	in(root , 1);
+	if(se.size()!= 1 || !ok)cout<<"No\n";
+	else cout<<"Yes\n";
+}
+int main(){
+   int t;
+   cin >> t;
+   while(t--)solve();
+}
