@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ii pair<int,int>
+int n ;
+int pre[100005] ;
+void back(int m , int l ,int  r){
+    if(m == r){
+        cout<<pre[m]<<" ";
+        return;
+    }
+    int id = m;
+    for(int i = m + 1 ; i<= r ;i++){
+        if(pre[i] < pre[m])id= i;
+        else break;
+    }
+    if(id != m )back(m+1 , m+1 , id);
+    id++;
+    if(id <=r){
+        back(id , id  , r );
+    }
+    cout<<pre[m]<<" ";
+}
+int main(){
+   int t;
+   cin >> t;
+   while(t--){
+   	cin >> n;
+   for(int i=0 ; i< n ;i++)cin >>pre[i];
+   back(0,0,n-1);
+   cout<<endl;
+   }
+}
