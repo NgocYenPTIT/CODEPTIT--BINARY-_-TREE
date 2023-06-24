@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct node{
+    int data;
+    node *left , *right;
+    node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+void insertnode(node* &root , int u , int v , char c){
+    if(!root)return;
+    if(root->data == u){
+        if(c == 'L')root->left = new node(v);
+        else root->right = new node(v);
+        return;
+    }
+    insertnode(root->left , u,v,c);
+    insertnode(root->right ,u,v,c);
+}
+pair<int,int> back(node* root){
+    if(!root)return {-1000000000,-1000000000};
+    int kiluc1 , kiluc2 = -1000000000;
+    auto left = back(root->left) , right = back(root->right);
+    kiluc2 = max(left.second , right.second) ;// max 2  ben
+    if(root->left && root->right)kiluc2 = max(kiluc2 , root->data + left.first + right.first); // la nay qua la kia tao thanh vong tron qua root
+    int tmp  = max(left.first , right.first);
+    if(tmp != -1e9) kiluc1 = root->data + tmp;
+    else kiluc1 = root->data;
+    return {kiluc1, kiluc2}; 
+}
+void solve(){
+    int n ;
+    cin >> n;
+    node* root = NULL;
+    while(n--){
+        int u , v;
+        char c;
+        cin >> u >> v >> c;
+        if(!root){
+            root = new node(u);
+            if(c == 'L')root->left = new node(v);
+            else root->right = new node(v);
+        }
+        else insertnode(root,u,v,c);
+    }
+   auto ans = back(root);
+   cout<<ans.second<<endl;
+}
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(NULL); cout.tie(NULL);
+    int t;
+    cin >> t;
+    while(t--)solve();
+}
