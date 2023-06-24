@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ii pair<int,int>
+int ok;
+struct node{
+	int data;
+	node *l , *r;
+	node(int x){
+		data = x;
+		l = r = NULL;
+	}
+};
+void insertnode(node *&root , int s, int t , char c){
+	if(root == NULL)return;
+	if(root->data == s){
+		if(c == 'L')root->l = new node(t);
+		else root ->r = new node(t);
+	}
+	else insertnode(root->l , s, t , c) , insertnode(root->r , s , t, c);
+}
+void in(node* root ){
+	if(root == NULL)return;
+	if(!ok)return;
+	if(!(root->l == NULL && root->r ==NULL)){
+		if(root->l == NULL || root->r ==NULL){
+			ok = 0;
+			return;
+		}
+	}
+	 in(root->l) ; in(root->r );
+}
+void solve(){
+	ok = 1;
+	node * root = NULL;
+	int n;
+	cin >> n;
+	while(n--){
+		int s , t;
+		char c;
+		cin >> s >> t>> c;
+		if(root==NULL){
+			root = new node(s);
+			if(c=='L')root->l = new node(t);
+			else root->r = new node(t);
+		}
+		else insertnode(root, s,t,c);
+	}
+	in(root);
+	cout<<ok<<endl;
+}
+int main(){
+   int t;
+   cin >> t;
+   while(t--)solve();
+}
+
+
