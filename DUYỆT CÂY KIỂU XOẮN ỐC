@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ii pair<int,int>
+struct node{
+    int data;
+    node *left , *right;
+    node(int x){
+        left = right = NULL;
+        data = x;
+    }
+};
+void insertnode(node *&root , int s , char c,int t){
+    if(root == NULL)return;
+    if(root-> data == s){
+        if(c == 'L')root -> left = new node(t);
+        else root -> right = new node(t);
+    }
+    else insertnode(root->left , s  ,c, t) , insertnode(root->right , s , c , t);
+}
+void in(node* root){
+    queue<node*> q;
+    q.push(root);
+    int step = 0;
+    while(q.size()){
+        if(step %2 == 1){
+            int tmp = q.size();
+            while(tmp--){
+                auto x = q.front() ; q.pop();
+                cout<<x->data<<" ";
+                if(x->left != NULL)q.push(x->left);
+                if(x -> right != NULL)q.push(x->right);
+            }
+        }
+        else {
+            stack<node*>st;
+            int tmp = q.size();
+            while(tmp--){
+                auto x = q.front() ; q.pop();
+                st.push(x);
+                if(x->left != NULL)q.push(x->left);
+                if(x -> right != NULL)q.push(x->right);
+            }
+            while(st.size())cout<<st.top()->data<<" ", st.pop();
+        }
+        ++step;
+    }
+}
+int main(){
+   int t;
+   cin>>t;
+   while(t--){
+   	node* root = NULL;
+   int n;
+   cin >> n;
+   while(n--){
+       int x , y ;
+       char c;
+       cin >> x >> y >>c;
+       if(root == NULL){
+           root = new node(x);
+           if(c == 'L')root -> left = new node(y);
+           else root->right = new node(y);
+       }
+       else insertnode(root , x , c , y);
+   }
+   in(root);
+   cout<<endl;
+   }
+}
