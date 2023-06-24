@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ii pair<int,int>
+int pre[10005] , in[100005];
+int n ;
+void back(int m , int l , int r){
+	if(l == r && r == m){
+		cout<<in[m]<<" ";
+		return;
+	}
+	for(int i = 0 ;i< n; i++){
+		int ok = 0;
+		for(int j = l ; j<= m - 1 ; j++){
+			if(ok)break;
+			if(pre[i] == in[j]){
+				back(j , l , m-1);
+				ok = 1;
+			}
+		}
+		if(ok)break;
+	}
+	//
+	for(int i = 0 ;i< n; i++){
+		int ok = 0;
+		for(int j = m+1 ; j<= r; j++){
+			if(ok)break;
+			if(pre[i] == in[j]){
+				back(j , m+1 , r);
+				ok = 1;
+			}
+		}
+		if(ok)break;
+	}
+	cout<<in[m]<<" ";
+}
+void solve(){
+	cin >>n;
+	for(int i = 0 ; i< n; i++)cin >>in[i];
+	for(int i =0 ; i< n; i++)cin >>pre[i];
+	for(int i =0 ; i< n; i++){
+		if(in[i] == pre[0]){
+			back(i , 0, n-1);
+			cout<<endl;
+			return;
+		}
+	}
+	cout<<endl;
+}
+int main(){
+   int t;
+   cin >> t;
+   while(t--)solve();
+}
