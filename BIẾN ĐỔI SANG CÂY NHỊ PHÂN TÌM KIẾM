@@ -4,7 +4,8 @@ using namespace std;
 void solve(){
 	int n;
 	cin >> n;
-	int a[n+20];
+	// hello
+	int a[n+200];/////
 	for(int i=1 ; i <= n; i++){
 		int x , y ;
 		char z;
@@ -19,7 +20,7 @@ void solve(){
 int main(){
 	ios_base::sync_with_stdio(0); cin.tie(NULL); cout.tie(NULL);
    int t;
-   cin >> t;
+   cin >> t;/////
    while(t--)solve();
 }
 ///////////////
