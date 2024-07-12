@@ -4,7 +4,7 @@ using namespace std;
 void solve(){
 	int n;
 	cin >> n;
-	int a[n+1];
+	int a[n+5];
 	for(int i=1 ; i <= n; i++){
 		int x , y ;
 		char z;
@@ -22,3 +22,5 @@ int main(){
    cin >> t;
    while(t--)solve();
 }
+//////////
+
